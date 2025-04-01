@@ -1,0 +1,14 @@
+services:
+  postgres_db:
+    build:
+      context: ..
+      dockerfile: ex00/Dockerfile.postgres_python
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: brenaudo
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: piscineds
+    ports:
+      - "5432:5432"
+    volumes:
+      - ..:/home/data

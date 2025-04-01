@@ -1,0 +1,27 @@
+FROM postgres:latest
+
+# Install Python3 + venv tooling
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-venv
+
+# Create a virtual environment in /home/venv
+RUN python3 -m venv /home/venv
+
+# Activate the virtual env for subsequent commands
+ENV PATH="/home/venv/bin:$PATH"
+
+# Now pip will install into /home/venv instead of the system Python
+RUN pip install --upgrade pip
+
+# Create a working directory for your code
+WORKDIR /home/data
+
+# Copy everything from the build context into /home/data
+COPY . /home/data
+
+RUN pip install -r /home/data/requirements.txt
+
+# Expose Postgres port (optional; Compose can also handle it)
+EXPOSE 5432
+
